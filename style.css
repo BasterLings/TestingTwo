@@ -1,0 +1,156 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:linear-gradient(
+    135deg,
+    #5F95EB,
+    #1E5CC8
+    );
+
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:1200px;
+    text-align:center;
+}
+
+.logo-section img{
+    width:180px;
+    height:180px;
+    object-fit:contain;
+    margin-bottom:10px;
+}
+
+.logo-section h1{
+    font-size:45px;
+    color:white;
+    font-weight:700;
+}
+
+.logo-section p{
+    color:white;
+    font-size:16px;
+    margin-top:5px;
+    margin-bottom:40px;
+}
+
+.cards-container{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+.card{
+    width:340px;
+
+    background:white;
+
+    border-radius:25px;
+
+    padding:35px 30px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+
+    transition:.3s ease;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.student-card{
+    border-top:8px solid #1E5CC8;
+}
+
+.admin-card{
+    border-top:8px solid #F4C21D;
+}
+
+.card i{
+    font-size:65px;
+    margin-bottom:20px;
+}
+
+.student-card i{
+    color:#1E5CC8;
+}
+
+.admin-card i{
+    color:#F4C21D;
+}
+
+.card h2{
+    margin-bottom:15px;
+    color:#333;
+}
+
+.card p{
+    color:#666;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.card a{
+    text-decoration:none;
+
+    display:inline-block;
+
+    padding:12px 25px;
+
+    border-radius:50px;
+
+    font-weight:bold;
+
+    transition:.3s;
+}
+
+.student-card a{
+    background:#1E5CC8;
+    color:white;
+}
+
+.student-card a:hover{
+    background:#174ba8;
+}
+
+.admin-card a{
+    background:#F4C21D;
+    color:#1E5CC8;
+}
+
+.admin-card a:hover{
+    background:#ffd43b;
+}
+
+@media(max-width:768px){
+
+    .logo-section img{
+        width:140px;
+        height:140px;
+    }
+
+    .logo-section h1{
+        font-size:35px;
+    }
+
+    .card{
+        width:100%;
+        max-width:350px;
+    }
+}
+

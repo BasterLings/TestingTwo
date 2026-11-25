@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Login | SYSTIM</title>
+
+    <link rel="stylesheet" href="student-login.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- LEFT SIDE -->
+
+        <div class="left">
+
+            <img src="image.png" alt="SYSTIM Logo">
+
+            <h1>SYSTIM</h1>
+
+            <p>
+                Smart School Transparency & Information Management
+            </p>
+
+            <br>
+
+            <p>
+                Submit concerns, suggestions, and track feedback status through the SySTIm platform.
+            </p>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+
+        <div class="right">
+
+            <div class="login-box">
+
+                <h2>Welcome Back 👋</h2>
+
+                <p>Student Portal Login</p>
+
+                <!-- Email -->
+
+                <div class="input-group">
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="📧 Student Email"
+                        required
+                    >
+                </div>
+
+                <!-- Password -->
+
+                <div class="input-group password-group">
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="🔒 Password"
+                        required
+                    >
+
+                    <span
+                        class="toggle-password"
+                        onclick="togglePassword()"
+                    >
+                        👁️
+                    </span>
+
+                </div>
+
+                <!-- Remember Me -->
+
+                <div class="remember">
+
+                    <label>
+                        <input type="checkbox">
+                        Remember Me
+                    </label>
+
+                    <a href="#">
+                        Forgot Password?
+                    </a>
+
+                </div>
+
+                <!-- Login Button -->
+
+                <button class="login-btn" onclick="loginStudent()">
+    Login
+</button>
+
+                
+
+                <div class="links">
+                    <a href="index.html">
+                        ← Back to Home
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+/* =================================
+   SYSTIM STUDENT LOGIN
+================================= */
+
+// SHOW / HIDE PASSWORD
+
+function togglePassword() {
+
+    const password = document.getElementById("password");
+    const icon = document.querySelector(".toggle-password");
+
+    if (password.type === "password") {
+        password.type = "text";
+        icon.innerHTML = "🙈";
+    } else {
+        password.type = "password";
+        icon.innerHTML = "👁️";
+    }
+
+}
+
+
+// STUDENT LOGIN
+
+function loginStudent() {
+
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value;
+
+    // VALIDATION
+
+    if (email === "") {
+        alert("Please enter your student email.");
+        return;
+    }
+
+    if (password === "") {
+        alert("Please enter your password.");
+        return;
+    }
+
+    // GET EXISTING STUDENTS
+
+    let students = JSON.parse(
+        localStorage.getItem("systimStudents")
+    ) || [];
+
+    // FIND EXISTING STUDENT
+
+    let existingStudent = students.find(function(student) {
+        return student.email.toLowerCase() === email;
+    });
+
+    // STUDENT INFORMATION
+
+    let studentId = existingStudent
+        ? existingStudent.studentId
+        : email;
+
+    let studentName = existingStudent
+        ? existingStudent.name
+        : "Student";
+
+    let loginDate = new Date().toLocaleString("en-PH");
+
+    // UPDATE EXISTING STUDENT
+
+    if (existingStudent) {
+
+        existingStudent.lastLogin = loginDate;
+        existingStudent.status = "Logged In";
+
+    }
+
+    // REGISTER NEW LOGIN RECORD
+
+    else {
+
+        students.push({
+
+            studentId: studentId,
+            name: studentName,
+            email: email,
+            lastLogin: loginDate,
+            concernCount: 0,
+            status: "Logged In"
+
+        });
+
+    }
+
+    // SAVE STUDENT RECORDS
+
+    localStorage.setItem(
+        "systimStudents",
+        JSON.stringify(students)
+    );
+
+    // SAVE CURRENT STUDENT SESSION
+
+    localStorage.setItem(
+        "systimCurrentStudent",
+        JSON.stringify({
+
+            studentId: studentId,
+            name: studentName,
+            email: email
+
+        })
+    );
+
+    alert("Login successful!");
+
+    // GO TO STUDENT DASHBOARD
+
+    window.location.href = "student-dashboard.html";
+
+}
+
+    </script>
+
+    
+
+</body>
+</html>

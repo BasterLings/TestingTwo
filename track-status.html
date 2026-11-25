@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Track Status | SySTIm</title>
+
+    <link rel="stylesheet" href="track-status.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        <img src="image.png" alt="Logo">
+        <h2>SySTIm</h2>
+    </div>
+
+    <ul>
+        <li>
+            <a href="student-dashboard.html">
+                <i class="fas fa-house"></i>
+                Dashboard
+            </a>
+        </li>
+
+        <li>
+            <a href="submit-concern.html">
+                <i class="fas fa-pen-to-square"></i>
+                Submit Concern
+            </a>
+        </li>
+
+        <li class="active">
+            <a href="track-status.html">
+                <i class="fas fa-magnifying-glass"></i>
+                Track Status
+            </a>
+        </li>
+
+        <li>
+            <a href="history.html">
+                <i class="fas fa-clock-rotate-left"></i>
+                History
+            </a>
+        </li>
+
+        <li>
+            <a href="profile.html">
+                <i class="fas fa-user"></i>
+                Profile
+            </a>
+        </li>
+
+        <li>
+            <a href="index.html">
+                <i class="fas fa-right-from-bracket"></i>
+                Logout
+            </a>
+        </li>
+    </ul>
+
+</div>
+
+
+<div class="main-content">
+
+    <div class="topbar">
+
+        <div>
+            <h1>Track Your Concerns</h1>
+            <p>Monitor the progress of your submitted concerns.</p>
+        </div>
+
+        <div class="profile">
+            <i class="fas fa-bell"></i>
+            <img src="image.png" alt="Profile">
+        </div>
+
+    </div>
+
+
+    <!-- SUMMARY CARDS -->
+
+    
+<div class="cards">
+
+    <div class="card blue">
+        <i class="fas fa-file-alt"></i>
+        <h2 id="totalCount">0</h2>
+        <p>Total Submitted</p>
+    </div>
+
+    <div class="card orange">
+        <i class="fas fa-hourglass-half"></i>
+        <h2 id="pendingCount">0</h2>
+        <p>Pending</p>
+    </div>
+
+    <div class="card purple">
+        <i class="fas fa-spinner"></i>
+        <h2 id="reviewCount">0</h2>
+        <p>In Review</p>
+    </div>
+
+    <div class="card green">
+        <i class="fas fa-circle-check"></i>
+        <h2 id="resolvedCount">0</h2>
+        <p>Resolved</p>
+    </div>
+
+</div>
+
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+        <i class="fas fa-search"></i>
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search concern..."
+            onkeyup="searchConcern()">
+
+    </div>
+
+
+    <!-- CONCERNS TABLE -->
+
+    <div class="table-container">
+
+        <h2>My Submitted Concerns</h2>
+
+        <table id="concernTable">
+
+            <thead>
+                <tr>
+                    <th>Concern ID</th>
+                    <th>Subject</th>
+                    <th>Date Submitted</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            
+<tbody id="concernList">
+
+</tbody>
+
+
+        </table>
+
+        <p id="noResults" style="display:none;">
+            No concerns found.
+        </p>
+
+    </div>
+
+
+    <!-- STATUS DETAILS -->
+
+    <div class="update-container">
+
+        <h2>
+            <i class="fas fa-bell"></i>
+            Latest Updates
+        </h2>
+
+        <div class="update">
+            <span class="dot orange-dot"></span>
+            <div>
+                <h3>Concern Received</h3>
+                <p>Your classroom fan concern has been successfully submitted.</p>
+                <small>November 18, 2026</small>
+            </div>
+        </div>
+
+        <div class="update">
+            <span class="dot purple-dot"></span>
+            <div>
+                <h3>Under Review</h3>
+                <p>Your WiFi connectivity concern is currently being reviewed.</p>
+                <small>November 16, 2026</small>
+            </div>
+        </div>
+
+        <div class="update">
+            <span class="dot green-dot"></span>
+            <div>
+                <h3>Concern Resolved</h3>
+                <p>Your library aircon concern has been marked as resolved.</p>
+                <small>November 14, 2026</small>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+function loadConcerns() {
+
+    let concerns = JSON.parse(
+        localStorage.getItem("systimConcerns")
+    ) || [];
+
+    let table = document.getElementById("concernList");
+
+    table.innerHTML = "";
+
+    let pending = 0;
+    let review = 0;
+    let resolved = 0;
+
+    concerns.forEach(function(concern) {
+
+        if (concern.status === "Pending") {
+            pending++;
+        } else if (concern.status === "In Review") {
+            review++;
+        } else if (concern.status === "Resolved") {
+            resolved++;
+        }
+
+        let statusClass = "";
+
+        if (concern.status === "Pending") {
+            statusClass = "pending";
+        } else if (concern.status === "In Review") {
+            statusClass = "review";
+        } else if (concern.status === "Resolved") {
+            statusClass = "resolved";
+        }
+
+        let row = document.createElement("tr");
+
+        let values = [
+            "#" + concern.id,
+            concern.subject,
+            concern.date,
+            concern.status
+        ];
+
+        values.forEach(function(value, index) {
+
+            let cell = document.createElement("td");
+
+            if (index === 3) {
+                let badge = document.createElement("span");
+                badge.className = "status " + statusClass;
+                badge.textContent = value;
+                cell.appendChild(badge);
+            } else {
+                cell.textContent = value;
+            }
+
+            row.appendChild(cell);
+
+        });
+
+        let actionCell = document.createElement("td");
+
+        let button = document.createElement("button");
+        button.textContent = "View";
+
+        button.addEventListener("click", function() {
+            viewDetails(concern.id);
+        });
+
+        actionCell.appendChild(button);
+        row.appendChild(actionCell);
+
+        table.appendChild(row);
+
+    });
+
+    document.getElementById("totalCount").textContent =
+        concerns.length;
+
+    document.getElementById("pendingCount").textContent =
+        pending;
+
+    document.getElementById("reviewCount").textContent =
+        review;
+
+    document.getElementById("resolvedCount").textContent =
+        resolved;
+
+}
+
+
+function viewDetails(id) {
+
+    let concerns = JSON.parse(
+        localStorage.getItem("systimConcerns")
+    ) || [];
+
+    let concern = concerns.find(item => item.id === id);
+
+    if (!concern) return;
+
+    alert(
+        "CONCERN DETAILS\n\n" +
+        "ID: " + concern.id + "\n" +
+        "Category: " + concern.category + "\n" +
+        "Subject: " + concern.subject + "\n" +
+        "Details: " + concern.details + "\n" +
+        "Date: " + concern.date + "\n" +
+        "Status: " + concern.status
+    );
+
+}
+
+
+// SEARCH FUNCTION
+
+function searchConcern() {
+
+    let input = document.getElementById("searchInput")
+        .value.toLowerCase();
+
+    let rows = document.querySelectorAll("#concernList tr");
+
+    let found = 0;
+
+    rows.forEach(function(row) {
+
+        let text = row.innerText.toLowerCase();
+
+        if (text.includes(input)) {
+            row.style.display = "";
+            found++;
+        } else {
+            row.style.display = "none";
+        }
+
+    });
+
+    document.getElementById("noResults").style.display =
+        found === 0 ? "block" : "none";
+
+}
+
+
+// LOAD DATA
+
+loadConcerns();
+
+
+
+
+function viewDetails(id) {
+
+    const details = {
+        SY001: "Broken Classroom Fan\nStatus: Pending\nYour concern has been received and is waiting for review.",
+        SY002: "WiFi Connectivity Issue\nStatus: In Review\nYour concern is currently being reviewed.",
+        SY003: "Library Aircon Problem\nStatus: Resolved\nYour concern has been marked as resolved."
+    };
+
+    alert(details[id] || "Concern details not found.");
+
+}
+
+// AUTOMATICALLY REFRESH WHEN ADMIN UPDATES STATUS
+
+window.addEventListener("storage", function(event) {
+
+    if (event.key === "systimConcerns") {
+        loadConcerns();
+    }
+
+});
+
+
+</script>
+
+</body>
+</html>

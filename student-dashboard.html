@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SYSTIM Student Dashboard</title>
+
+<link rel="stylesheet" href="student-dashboard.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        <img src="image.png" alt="Logo">
+        <h2>SYSTIM</h2>
+    </div>
+
+    <ul>
+
+        <li class="active">
+            <i class="fas fa-house"></i>
+            Dashboard
+        </li>
+
+        <li>
+    <a href="submit-concern.html">
+        <i class="fas fa-pen-to-square"></i>
+        Submit Concern
+    </a>
+</li>
+
+        <li>
+    <a href="track-status.html">
+        <i class="fas fa-magnifying-glass"></i>
+        Track Status
+    </a>
+</li>
+
+        <li>
+            <i class="fas fa-clock-rotate-left"></i>
+            History
+        </li>
+
+        <li>
+            <i class="fas fa-user"></i>
+            Profile
+        </li>
+
+        <li>
+            <i class="fas fa-right-from-bracket"></i>
+            Logout
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="main-content">
+
+    <div class="topbar">
+
+        <div>
+            <h1>Welcome Back, Student 👋</h1>
+            <p>SySTIm Student Dashboard</p>
+        </div>
+
+        <div class="top-icons">
+
+            <div class="notification">
+                <i class="fas fa-bell"></i>
+                <span>3</span>
+            </div>
+
+            <img src="image.png" alt="Profile">
+
+        </div>
+
+    </div>
+
+    <!-- CARDS -->
+
+    <div class="cards">
+
+        <div class="card blue">
+            <i class="fas fa-file-circle-exclamation"></i>
+            <h2>12</h2>
+            <p>Total Concerns</p>
+        </div>
+
+        <div class="card orange">
+            <i class="fas fa-hourglass-half"></i>
+            <h2>4</h2>
+            <p>Pending</p>
+        </div>
+
+        <div class="card purple">
+            <i class="fas fa-spinner"></i>
+            <h2>3</h2>
+            <p>In Review</p>
+        </div>
+
+        <div class="card green">
+            <i class="fas fa-circle-check"></i>
+            <h2>5</h2>
+            <p>Resolved</p>
+        </div>
+
+    </div>
+
+    <!-- RECENT CONCERNS -->
+
+    <div class="table-container">
+
+        <div class="section-title">
+            Recent Concerns
+        </div>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Concern</th>
+                    <th>Date Submitted</th>
+                    <th>Status</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Broken Classroom Fan</td>
+                    <td>Nov 18, 2026</td>
+                    <td><span class="status pending">Pending</span></td>
+                </tr>
+
+                <tr>
+                    <td>WiFi Connectivity Issue</td>
+                    <td>Nov 15, 2026</td>
+                    <td><span class="status review">In Review</span></td>
+                </tr>
+
+                <tr>
+                    <td>Library Aircon Problem</td>
+                    <td>Nov 12, 2026</td>
+                    <td><span class="status resolved">Resolved</span></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

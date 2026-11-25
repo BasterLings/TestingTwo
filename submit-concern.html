@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Concern | Campus Pulse</title>
+
+    <link rel="stylesheet" href="submit-concern.css">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="form-card">
+
+        <h1>
+            <i class="fas fa-paper-plane"></i>
+            Submit Concern
+        </h1>
+
+        <p>
+            Share your concern, suggestion, or report to help improve campus services.
+        </p>
+
+<form id="concernForm">
+
+    <label>Category</label>
+    <select id="category" required>
+        <option value="">Select Category</option>
+        <option>Facilities</option>
+        <option>Academic Concern</option>
+        <option>Student Services</option>
+        <option>Bullying Report</option>
+        <option>Safety Concern</option>
+        <option>Suggestion</option>
+        <option>Others</option>
+    </select>
+
+    <label>Subject</label>
+    <input
+        type="text"
+        id="subject"
+        placeholder="Enter concern subject"
+        required>
+
+    <label>Concern Details</label>
+    <textarea
+        id="details"
+        rows="6"
+        placeholder="Describe your concern here..."
+        required></textarea>
+
+    <button type="submit">
+        Submit Concern
+    </button>
+
+</form>
+
+<script>
+
+document.getElementById("concernForm").addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    let category = document.getElementById("category").value;
+    let subject = document.getElementById("subject").value.trim();
+    let details = document.getElementById("details").value.trim();
+
+    let concerns = JSON.parse(localStorage.getItem("systimConcerns")) || [];
+
+    let newConcern = {
+        id: "SY" + String(Date.now()).slice(-6),
+        category: category,
+        subject: subject,
+        details: details,
+        date: new Date().toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        }),
+        status: "Pending"
+    };
+
+    concerns.unshift(newConcern);
+
+    localStorage.setItem("systimConcerns", JSON.stringify(concerns));
+
+    alert("Your concern has been submitted successfully!");
+
+    document.getElementById("concernForm").reset();
+
+    window.location.href = "track-status.html";
+
+});
+
+
+function saveConcern(category, subject, details) {
+
+    // GET CURRENT LOGGED-IN STUDENT
+
+    let student = JSON.parse(
+        localStorage.getItem("systimCurrentStudent")
+    );
+
+    if (!student) {
+
+        alert("Please login first!");
+
+        window.location.href = "student-login.html";
+
+        return;
+
+    }
+
+    // GET EXISTING CONCERNS
+
+    let concerns = JSON.parse(
+        localStorage.getItem("systimConcerns")
+    ) || [];
+
+    // CREATE NEW CONCERN
+
+    let newConcern = {
+
+        id: "SY" + Date.now(),
+
+        studentId: student.studentId,
+
+        studentName: student.name,
+
+        studentEmail: student.email,
+
+        category: category,
+
+        subject: subject,
+
+        details: details,
+
+        date: new Date().toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        }),
+
+        status: "Pending"
+
+    };
+
+    concerns.push(newConcern);
+
+    // SAVE TO LOCAL STORAGE
+
+    localStorage.setItem(
+        "systimConcerns",
+        JSON.stringify(concerns)
+    );
+
+    alert("Your concern has been submitted successfully!");
+
+    window.location.href = "track-status.html";
+
+}
+
+
+</script>
+
+
+    </div>
+
+</div>
+
+</body>
+</html>

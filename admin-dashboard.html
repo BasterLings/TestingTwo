@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYSTIM Admin Dashboard</title>
+
+<link rel="stylesheet" href="admin-dashboard.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        <img src="image.png" alt="Logo">
+        <h2>SYSTIM</h2>
+        <p>Administrator Panel</p>
+    </div>
+
+    <ul>
+
+        <li class="active">
+            <i class="fas fa-chart-pie"></i>
+            Dashboard
+        </li>
+
+        <li>
+            <i class="fas fa-folder-open"></i>
+            Manage Concerns
+        </li>
+
+        <li>
+    <a href="students.html">
+        <i class="fas fa-users"></i>
+        Students
+    </a>
+</li>
+
+        <li>
+            <i class="fas fa-chart-line"></i>
+            Analytics
+        </li>
+
+        <li>
+            <i class="fas fa-bell"></i>
+            Notifications
+        </li>
+
+        <li>
+            <i class="fas fa-gear"></i>
+            Settings
+        </li>
+
+        <li onclick="logout()">
+            <i class="fas fa-right-from-bracket"></i>
+            Logout
+        </li>
+
+    </ul>
+
+</div>
+
+<div class="main-content">
+
+    <div class="topbar">
+
+        <div>
+            <h1>Admin Dashboard 👨‍💼</h1>
+            <p>SySTIm Management Center</p>
+        </div>
+
+        <div class="profile">
+
+            <div class="notification">
+                <i class="fas fa-bell"></i>
+                <span>5</span>
+            </div>
+
+            <img src="image.png" alt="Profile">
+
+        </div>
+
+    </div>
+
+    
+<!-- DASHBOARD CARDS -->
+
+<div class="cards">
+
+    <div class="card blue">
+        <i class="fas fa-file-circle-exclamation"></i>
+        <h2 id="totalCount">0</h2>
+        <p>Total Concerns</p>
+    </div>
+
+    <div class="card orange">
+        <i class="fas fa-hourglass-half"></i>
+        <h2 id="pendingCount">0</h2>
+        <p>Pending</p>
+    </div>
+
+    <div class="card purple">
+        <i class="fas fa-spinner"></i>
+        <h2 id="reviewCount">0</h2>
+        <p>In Review</p>
+    </div>
+
+    <div class="card green">
+        <i class="fas fa-circle-check"></i>
+        <h2 id="resolvedCount">0</h2>
+        <p>Resolved</p>
+    </div>
+
+</div>
+
+
+<!-- MANAGE CONCERNS -->
+
+<div class="table-container">
+
+    <div class="section-title">
+        Recent Student Concerns
+    </div>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Concern ID</th>
+                <th>Student</th>
+                <th>Concern</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Update Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="adminConcernList">
+
+        </tbody>
+
+    </table>
+
+    <p id="emptyMessage" style="display:none; padding:20px;">
+        No student concerns submitted yet.
+    </p>
+
+</div>
+
+
+<script>
+
+// LOAD ALL CONCERNS
+
+function loadAdminConcerns() {
+
+    let concerns = JSON.parse(
+        localStorage.getItem("systimConcerns")
+    ) || [];
+
+    let table = document.getElementById("adminConcernList");
+
+    table.innerHTML = "";
+
+    let pending = 0;
+    let review = 0;
+    let resolved = 0;
+
+    concerns.forEach(function(concern) {
+
+        if (concern.status === "Pending") pending++;
+        if (concern.status === "In Review") review++;
+        if (concern.status === "Resolved") resolved++;
+
+        let row = document.createElement("tr");
+
+        let id = document.createElement("td");
+        id.textContent = "#" + concern.id;
+
+        let student = document.createElement("td");
+        student.textContent = concern.studentName || "Student";
+
+        let subject = document.createElement("td");
+        subject.textContent = concern.subject;
+
+        let date = document.createElement("td");
+        date.textContent = concern.date;
+
+        let statusCell = document.createElement("td");
+        let badge = document.createElement("span");
+
+        badge.className = "status " +
+            (concern.status === "Pending" ? "pending" :
+            concern.status === "In Review" ? "review" : "resolved");
+
+        badge.textContent = concern.status;
+        statusCell.appendChild(badge);
+
+        let updateCell = document.createElement("td");
+        let select = document.createElement("select");
+
+        ["Pending", "In Review", "Resolved"].forEach(function(status) {
+
+            let option = document.createElement("option");
+            option.value = status;
+            option.textContent = status;
+            option.selected = concern.status === status;
+
+            select.appendChild(option);
+
+        });
+
+        select.addEventListener("change", function() {
+            updateConcernStatus(concern.id, select.value);
+        });
+
+        updateCell.appendChild(select);
+
+        let actionCell = document.createElement("td");
+        let viewButton = document.createElement("button");
+
+        viewButton.textContent = "View";
+        viewButton.className = "view-btn";
+
+        viewButton.addEventListener("click", function() {
+            viewConcern(concern.id);
+        });
+
+        actionCell.appendChild(viewButton);
+
+        [id, student, subject, date, statusCell, updateCell, actionCell]
+            .forEach(cell => row.appendChild(cell));
+
+        table.appendChild(row);
+
+    });
+
+    document.getElementById("totalCount").textContent = concerns.length;
+    document.getElementById("pendingCount").textContent = pending;
+    document.getElementById("reviewCount").textContent = review;
+    document.getElementById("resolvedCount").textContent = resolved;
+
+    document.getElementById("emptyMessage").style.display =
+        concerns.length === 0 ? "block" : "none";
+}
+
+
+// UPDATE STATUS
+
+function updateConcernStatus(id, newStatus) {
+
+    let concerns = JSON.parse(
+        localStorage.getItem("systimConcerns")
+    ) || [];
+
+    let concern = concerns.find(item => item.id === id);
+
+    if (!concern) return;
+
+    concern.status = newStatus;
+
+    localStorage.setItem(
+        "systimConcerns",
+        JSON.stringify(concerns)
+    );
+
+    alert("Status updated successfully!");
+
+    loadAdminConcerns();
+
+}
+
+
+// VIEW DETAILS
+
+function viewConcern(id) {
+
+    let concerns = JSON.parse(
+        localStorage.getItem("systimConcerns")
+    ) || [];
+
+    let concern = concerns.find(item => item.id === id);
+
+    if (!concern) return;
+
+    alert(
+        "CONCERN DETAILS\n\n" +
+        "ID: " + concern.id + "\n" +
+        "Category: " + concern.category + "\n" +
+        "Subject: " + concern.subject + "\n" +
+        "Details: " + concern.details + "\n" +
+        "Date: " + concern.date + "\n" +
+        "Status: " + concern.status
+    );
+
+}
+
+
+// LOGOUT
+
+function logout() {
+
+    if (confirm("Are you sure you want to logout?")) {
+        window.location.href = "admin-login.html";
+    }
+
+}
+
+
+// AUTOMATIC REFRESH
+
+window.addEventListener("storage", function(event) {
+
+    if (event.key === "systimConcerns") {
+        loadAdminConcerns();
+    }
+
+});
+
+
+// INITIAL LOAD
+
+loadAdminConcerns();
+
+</script>
+
+</body>
+</html>
+
+
+
+<script>
+
+function logout(){
+
+    if(confirm("Are you sure you want to logout?")){
+
+        window.location.href = "admin-login.html";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
