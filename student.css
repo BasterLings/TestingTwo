@@ -1,0 +1,368 @@
+
+/* =================================
+   SYSTIM STUDENTS MANAGEMENT
+================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f3f6fc;
+    color: #1e293b;
+}
+
+/* MAIN CONTENT */
+
+.main-content {
+    margin-left: 290px;
+    padding: 35px;
+    min-height: 100vh;
+}
+
+/* PAGE HEADING */
+
+.page-heading {
+    margin-bottom: 30px;
+}
+
+.page-heading h1 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #075bd8;
+    margin-bottom: 8px;
+}
+
+.page-heading h1 i {
+    margin-right: 10px;
+}
+
+.page-heading p {
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* =================================
+   SUMMARY CARDS
+================================= */
+
+.student-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    margin-bottom: 30px;
+}
+
+.student-card {
+    background: white;
+    padding: 27px;
+    border-radius: 18px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    transition: 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.student-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.09);
+}
+
+.student-card i {
+    font-size: 30px;
+    margin-bottom: 18px;
+}
+
+.student-card h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #1e293b;
+}
+
+.student-card p {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.student-card.blue i {
+    color: #2563eb;
+}
+
+.student-card.green i {
+    color: #16a34a;
+}
+
+.student-card.orange i {
+    color: #f59e0b;
+}
+
+/* =================================
+   STUDENT TABLE
+================================= */
+
+.student-table-container {
+    background: white;
+    padding: 28px;
+    border-radius: 20px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+    overflow-x: auto;
+}
+
+.student-table-container h2 {
+    font-size: 21px;
+    font-weight: 600;
+    color: #075bd8;
+    margin-bottom: 22px;
+}
+
+/* SEARCH INPUT */
+
+.student-search {
+    width: 100%;
+    max-width: 380px;
+    padding: 13px 18px;
+    border: 1px solid #dbe2ea;
+    border-radius: 10px;
+    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    margin-bottom: 22px;
+    transition: 0.3s;
+}
+
+.student-search:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+}
+
+.student-search::placeholder {
+    color: #94a3b8;
+}
+
+/* TABLE */
+
+.student-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+}
+
+.student-table thead {
+    background: #f1f5fb;
+}
+
+.student-table th {
+    padding: 17px 15px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+    white-space: nowrap;
+}
+
+.student-table td {
+    padding: 17px 15px;
+    font-size: 13px;
+    color: #475569;
+    border-bottom: 1px solid #edf0f5;
+}
+
+.student-table tbody tr {
+    transition: 0.2s;
+}
+
+.student-table tbody tr:hover {
+    background: #f8faff;
+}
+
+/* STUDENT STATUS */
+
+.student-status {
+    display: inline-block;
+    padding: 6px 13px;
+    border-radius: 20px;
+    background: #dcfce7;
+    color: #15803d;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* CONCERN COUNT */
+
+.concern-count {
+    display: inline-block;
+    min-width: 30px;
+    text-align: center;
+    padding: 6px 11px;
+    border-radius: 20px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* VIEW BUTTON */
+
+.student-action {
+    padding: 9px 18px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.student-action:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+/* EMPTY MESSAGE */
+
+.empty-message {
+    text-align: center;
+    padding: 35px;
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* =================================
+   SIDEBAR LINKS
+================================= */
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+}
+
+.sidebar ul li.active {
+    background: rgba(255, 255, 255, 0.16);
+    border-left: 5px solid #ffd43b;
+}
+
+/* =================================
+   RESPONSIVE DESIGN
+================================= */
+
+@media screen and (max-width: 1100px) {
+
+    .main-content {
+        margin-left: 250px;
+        padding: 25px;
+    }
+
+    .student-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media screen and (max-width: 768px) {
+
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .student-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .page-heading h1 {
+        font-size: 24px;
+    }
+
+    .student-table-container {
+        padding: 18px;
+    }
+
+}
+
+@media screen and (max-width: 480px) {
+
+    .main-content {
+        padding: 15px;
+    }
+
+    .page-heading h1 {
+        font-size: 21px;
+    }
+
+    .student-card {
+        padding: 22px;
+    }
+
+    .student-card h2 {
+        font-size: 27px;
+    }
+
+}
+
+
+/* FIX ADMIN SIDEBAR MENU LINKS */
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    list-style: none;
+    color: #ffffff;
+}
+
+.sidebar ul li a,
+.sidebar ul li a:visited,
+.sidebar ul li a:active {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    padding: 20px 25px;
+
+    color: #ffffff !important;
+    text-decoration: none !important;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+
+    transition: 0.3s ease;
+}
+
+/* FIX SIDEBAR LINKS - MATCH ADMIN DASHBOARD */
+
+.sidebar ul li a {
+    display: block;
+    color: white !important;
+    text-decoration: none !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.sidebar ul li a:visited,
+.sidebar ul li a:hover,
+.sidebar ul li a:active {
+    color: white !important;
+    text-decoration: none !important;
+}
+
+.sidebar ul li a i {
+    color: white !important;
+    margin-right: 12px;
+}
+
